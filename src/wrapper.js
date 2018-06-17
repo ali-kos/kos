@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { connect, Provider } from 'react-redux';
-import { wrapperDispatch, getParam } from './util';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { wrapperDispatch, getParam } from './util';
 
+const { func } = PropTypes;
 
-const createWrapperComponent = (config) => (Component) => {
+const createWrapperComponent = config => (Component) => {
   const { model = {}, autoLoad = true } = config;
   const { namespace, initial } = model;
 
@@ -13,10 +14,20 @@ const createWrapperComponent = (config) => (Component) => {
       super(props);
       this.namespace = namespace;
     }
+    getChildContext() {
+      return {
+        dispatch: this.dispatch.bind(this),
+        getNamespace: () => this.namespace,
+        getState: () => this.props,
+      };
+    }
+    componentDidMount() {
+      this.resetData();
+    }
     getParam() {
       const param = getParam();
 
-      if (this.props.match && this.props.match.params) {
+      if (this.props.match && this.props.match.params) { // eslint-disable-line
         return {
           ...param,
           ...this.props.match.params,
@@ -25,71 +36,54 @@ const createWrapperComponent = (config) => (Component) => {
       return param;
     }
     dispatch(action) {
-      wrapperDispatch(this.props.dispatch, this.namespace)(action);
-    }
-    componentDidMount() {
-      this.resetData();
+      wrapperDispatch(this.props.dispatch, this.namespace)(action); // eslint-disable-line
     }
     resetData() {
       this.dispatch({
         type: 'reset',
         payload: {
-          ...initial
-        }
-      });
-      autoLoad && this.dispatch({
-        type: 'setup',
-        payload: {
-          param: this.getParam()
-        }
-      })
-    }
-    getChildContext() {
-      return {
-        dispatch: this.dispatch.bind(this),
-        getNamespace: () => {
-          return this.namespace;
+          ...initial,
         },
-        getState: () => {
-          return this.props;
-        }
+      });
+      if (autoLoad) {
+        this.dispatch({
+          type: 'setup',
+          payload: {
+            param: this.getParam(),
+          },
+        });
       }
     }
     render() {
-      const { dispatch } = this.props;
-
-      return <Component {...this.props}
+      return (<Component
+        {...this.props}
         dispatch={wrapperDispatch(this.props.dispatch, this.namespace)}
-        getParam={() => { return this.getParam() }} />
+        getParam={() => this.getParam()}
+      />);
     }
-  }
+  };
 
   WrapperComponent.childContextTypes = {
-    dispatch: PropTypes.func,
-    getState: PropTypes.func,
-    getNamespace: PropTypes.func
+    dispatch: func,
+    getState: func,
+    getNamespace: func,
   };
 
   return WrapperComponent;
 };
 
-const createContainerComponent = (config) => (Component) => {
+const createContainerComponent = config => (Component) => {
   // 容器component
   const WrapperComponent = createWrapperComponent(config)(Component);
 
-  const { model = {}, autoLoad = true } = config;
-  const { namespace, initial } = model;
+  const { model = {} } = config;
+  const { namespace } = model;
 
-  const mapStateToProps = (state) => {
-    return state[namespace] || {};
-  }
+  const mapStateToProps = state => state[namespace] || {};
 
   // app component
   return connect(mapStateToProps)(WrapperComponent);
-}
-
-
-
-export default (config = {}) => (Component) => {
-  return createContainerComponent(config)(Component);
 };
+
+
+export default (config = {}) => Component => createContainerComponent(config)(Component);

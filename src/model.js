@@ -1,6 +1,6 @@
 const DefaultReducers = {
   setState(state, action) {
-    let payload = action.payload;
+    let { payload } = action;
 
     if (!payload) {
       payload = { ...action };
@@ -9,29 +9,31 @@ const DefaultReducers = {
 
     return {
       ...state,
-      ...payload
-    }
+      ...payload,
+    };
   },
   reset(state, action) {
     return {
-      ...action.payload
-    }
-  }
+      ...action.payload,
+    };
+  },
 };
 
 const Model = class {
   constructor(model) {
-    const { namespace, asyncs, reducers, setup } = model;
+    const {
+      namespace, asyncs, reducers, setup,
+    } = model;
     this.namespace = namespace;
     Object.assign(model, {
       asyncs: {
         setup,
-        ...asyncs
+        ...asyncs,
       },
       reducers: {
         ...DefaultReducers,
-        ...reducers
-      }
+        ...reducers,
+      },
     });
 
     this.model = model;
@@ -43,7 +45,7 @@ const Model = class {
     return this.model.asyncs[type];
   }
   getReducer(type) {
-    return this.model.reducers[type]
+    return this.model.reducers[type];
   }
   getInitial() {
     return this.model.initial;
@@ -60,16 +62,16 @@ const createModelFactory = (model) => {
   const { namespace } = model;
 
   if (!namespace) {
-    console.error('namespace is undefined!', model);
-    throw new Error('namespace is undefined!')
+    console.error('namespace is undefined!', model);  // eslint-disable-line
+    throw new Error('namespace is undefined!');
   }
-  map[namespace] = new Model(model);
+  map[namespace] = new Model(model); // eslint-disable-line
 };
 
 const map = {};
 Object.assign(Model, {
   add(model) {
-    model = createModelFactory(model);
+    model = createModelFactory(model); // eslint-disable-line
 
     return model;
   },
@@ -89,7 +91,7 @@ Object.assign(Model, {
     return initial;
   },
   each(callback) {
-    for (var namespace in map) {
+    for (const namespace in map) { // eslint-disable-line
       callback(namespace, map[namespace]);
     }
   },
@@ -105,7 +107,7 @@ Object.assign(Model, {
     const model = this.get(namespace);
 
     return model && model.setup;
-  }
+  },
 });
 
 export default Model;
