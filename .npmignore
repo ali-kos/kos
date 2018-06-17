@@ -6,3 +6,4 @@ src/
 .npmignore
 .babelrc
 rollup.config.js
+npm-debug.log
