@@ -1,0 +1,36 @@
+{
+  "presets": [
+    "env",
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    [
+      "transform-runtime",
+      {
+        "helpers": false,
+        "polyfill": false,
+        "regenerator": true
+      }
+    ],
+    [
+      "transform-decorators-legacy"
+    ],
+    [
+      "transform-async-to-generator"
+    ],
+    [
+      "transform-es2015-arrow-functions"
+    ],
+    [
+      "transform-es2015-destructuring"
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
+      }
+    ]
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "@ali/kos",
+  "name": "kos-core",
   "version": "0.1.0",
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
