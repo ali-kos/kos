@@ -1,0 +1,9 @@
+src/
+/index.js
+.editorconfig
+.eslintrc.js
+.gitignore
+.npmignore
+.babelrc
+rollup.config.js
+npm-debug.log

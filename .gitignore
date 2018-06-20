@@ -17,10 +17,11 @@ Thumbs.db
 *.swo
 *.pyc
 *.pyo
-node_modules
 npm-debug.log
 dist
 *.json.gz
 **/runtime.js
 yarn*
 **/frame/index.js
+node_modules/
+lib/

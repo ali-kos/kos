@@ -1,4 +1,4 @@
-import Redux, { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -11,8 +11,7 @@ import RootReducer from './src/root-reducer';
 
 
 let store = null;
-let middlewareList = [asyncMiddleware(Model)];
-const pages = [];
+const middlewareList = [asyncMiddleware(Model)];
 
 const initStore = () => {
   if (!store) {
@@ -20,16 +19,14 @@ const initStore = () => {
     const initial = Model.getInitial();
     const rootReducer = RootReducer(Model);
 
-    window.store = store = createStore(rootReducer, initial, enchance);
+    window.store = store = createStore(rootReducer, initial, enchance); // eslint-disable-line
   }
 };
 
 const KOS = {
   Util,
   splitActionType: Util.getActionType,
-  registeModel: (model) => {
-    return Model.add(model);
-  },
+  registeModel: model => Model.add(model),
   removeModel(namespace) {
     Model.del(namespace);
   },
@@ -39,10 +36,8 @@ const KOS = {
   use(middleware) {
     middlewareList.unshift(middleware);
   },
-  Wrapper: config => Component => {
-    const { model = {} } = config;
-
-    config.model = config.model || { namespace: [Symbol.iterator] };
+  Wrapper: config => (Component) => {
+    config.model = config.model || { namespace: [Symbol.iterator] }; // eslint-disable-line
 
     Model.add(config.model);
 
@@ -53,10 +48,10 @@ const KOS = {
   start(Layout, container = '#main') {
     initStore();
 
-    ReactDOM.render(<Provider store={store}>
+    ReactDOM.render((<Provider store={store}>
       <Layout />
-    </Provider>, document.querySelector(container));
-  }
+    </Provider>), document.querySelector(container)); // eslint-disable-line
+  },
 };
 
 export default KOS;

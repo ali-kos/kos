@@ -37,7 +37,7 @@
 
 ```js
 import React from 'react';
-import KOS form '@ali/kos';
+import KOS form 'kos-core';
 import model from './model';
 
 @KOS.Wrapper({model})

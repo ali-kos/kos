@@ -1,36 +1,17 @@
 {
   "presets": [
-    "env",
-    "stage-0",
-    "react"
-  ],
-  "plugins": [
     [
-      "transform-runtime",
+      "env",
       {
-        "helpers": false,
-        "polyfill": false,
-        "regenerator": true
-      }
-    ],
-    [
-      "transform-decorators-legacy"
-    ],
-    [
-      "transform-async-to-generator"
-    ],
-    [
-      "transform-es2015-arrow-functions"
-    ],
-    [
-      "transform-es2015-destructuring"
-    ],
-    [
-      "import",
-      {
-        "libraryName": "antd",
-        "style": true
+        "modules": false
       }
     ]
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "transform-es2015-spread",
+    "transform-object-rest-spread",
+    "external-helpers",
+    "transform-react-jsx"
   ]
 }

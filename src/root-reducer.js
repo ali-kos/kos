@@ -1,4 +1,4 @@
-export default (Model) => (state, action) => {
+export default Model => (state, action) => {
   const [namespace, type] = action.type.split('/');
   const modelState = state[namespace] || {};
   const newState = { ...state };
@@ -15,5 +15,5 @@ export default (Model) => (state, action) => {
     }
   }
 
-  return newState
-}
+  return newState;
+};
