@@ -8,6 +8,14 @@
     ]
   ],
   "plugins": [
+    [
+      "transform-runtime",
+      {
+        "helpers": true,
+        "polyfill": false,
+        "regenerator": true
+      }
+    ],
     "transform-class-properties",
     "transform-es2015-spread",
     "transform-object-rest-spread",

@@ -1,3 +1,4 @@
+
 const DefaultReducers = {
   setState(state, action) {
     let { payload } = action;
@@ -65,15 +66,15 @@ const createModelFactory = (model) => {
     console.error('namespace is undefined!', model);  // eslint-disable-line
     throw new Error('namespace is undefined!');
   }
-  map[namespace] = new Model(model); // eslint-disable-line
+  return new Model(model); // eslint-disable-line
 };
 
 const map = {};
 Object.assign(Model, {
   add(model) {
-    model = createModelFactory(model); // eslint-disable-line
-
-    return model;
+    const ins = createModelFactory(model); // eslint-disable-line
+    map[model.namespace] = ins;
+    return ins;
   },
   del(namespace) {
     delete map[namespace];
