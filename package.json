@@ -1,6 +1,7 @@
 {
   "name": "kos-core",
   "version": "0.1.4",
+  "description": "基于react-redux的可使用封装",
   "repository": {
     "type": "git",
     "url": "https://github.com/ali-kos/kos"
@@ -17,8 +18,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
-    "redux": "3",
-    "redux-logger": "3"
+    "redux": "3"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

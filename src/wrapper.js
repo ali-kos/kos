@@ -59,6 +59,7 @@ const createWrapperComponent = config => (Component) => {
         {...this.props}
         dispatch={wrapperDispatch(this.props.dispatch, this.namespace)}
         getParam={() => this.getParam()}
+        getNamespace={() => this.namespace}
       />);
     }
   };
