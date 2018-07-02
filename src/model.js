@@ -72,8 +72,12 @@ const createModelFactory = (model) => {
 const map = {};
 Object.assign(Model, {
   add(model) {
-    const ins = createModelFactory(model); // eslint-disable-line
-    map[model.namespace] = ins;
+    const { namespace } = model;
+    let ins = map[namespace];
+    if (!ins) {
+      ins = createModelFactory(model); // eslint-disable-line
+      map[namespace] = ins;
+    }
     return ins;
   },
   del(namespace) {

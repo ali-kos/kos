@@ -2,27 +2,34 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { wrapperDispatch, getParam } from './util';
+import Model from './model';
 
 const { func } = PropTypes;
 
-const createWrapperComponent = config => (Component) => {
-  const { model = {}, autoLoad = true } = config;
-  const { namespace, initial } = model;
-
+const Wrapper = config => (Component) => {
+  const { model = {}, autoLoad = true, namespace } = config;
   const WrapperComponent = class extends PureComponent {
     constructor(props) {
       super(props);
-      this.namespace = namespace;
+
+      this.autoLoad = props.autoLoad === false ? false : autoLoad;
+      this.namespace = props.namespace || namespace || model.namespace;
+
+      this.model = Model.add({
+        ...config.model,
+        namespace: this.namespace
+      });
+      this.dispatch = wrapperDispatch(props.dispatch, this.namespace);
     }
     getChildContext() {
       return {
-        dispatch: this.dispatch.bind(this),
         getNamespace: () => this.namespace,
-        getState: () => this.props,
+        dispatch: this.dispatch.bind(this),
+        getState: () => this.getState.bind(this)
       };
     }
-    componentDidMount() {
-      this.resetData();
+    getState() {
+      return Store().getState()[this.namespace];
     }
     getParam() {
       const param = getParam();
@@ -35,17 +42,17 @@ const createWrapperComponent = config => (Component) => {
       }
       return param;
     }
-    dispatch(action) {
-      wrapperDispatch(this.props.dispatch, this.namespace)(action); // eslint-disable-line
-    }
     resetData() {
+      const model = Model.get(this.namespace);
+
       this.dispatch({
         type: 'reset',
         payload: {
-          ...initial,
+          ...model.getInitial(),
         },
       });
-      if (autoLoad) {
+
+      if (this.autoLoad) {
         this.dispatch({
           type: 'setup',
           payload: {
@@ -54,10 +61,15 @@ const createWrapperComponent = config => (Component) => {
         });
       }
     }
+    componentDidMount() {
+      this.resetData();
+    }
     render() {
+      const { ViewComponent } = this;
+
       return (<Component
         {...this.props}
-        dispatch={wrapperDispatch(this.props.dispatch, this.namespace)}
+        dispatch={this.dispatch}
         getParam={() => this.getParam()}
         getNamespace={() => this.namespace}
       />);
@@ -73,18 +85,13 @@ const createWrapperComponent = config => (Component) => {
   return WrapperComponent;
 };
 
-const createContainerComponent = config => (Component) => {
-  // 容器component
-  const WrapperComponent = createWrapperComponent(config)(Component);
 
-  const { model = {} } = config;
-  const { namespace } = model;
+export default config => Component => {
+  const WrapperComponent = Wrapper(config)(Component);
+  const { model } = config;
+  Model.add(model);
 
+  const { namespace = '' } = model;
   const mapStateToProps = state => state[namespace] || {};
-
-  // app component
   return connect(mapStateToProps)(WrapperComponent);
 };
-
-
-export default (config = {}) => Component => createContainerComponent(config)(Component);

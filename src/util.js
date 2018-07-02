@@ -7,7 +7,7 @@
 export const wrapperDispatch = (dispatch, namespace) => (action) => {
   const type = action.type.indexOf('/') > -1 ? action.type : `${namespace}/${action.type}`;
 
-  dispatch({
+  return dispatch({
     ...action,
     type,
   });
