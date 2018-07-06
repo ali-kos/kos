@@ -1,6 +1,6 @@
 {
   "name": "kos-core",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "基于react-redux的可使用封装",
   "repository": {
     "type": "git",
@@ -12,8 +12,9 @@
     "pub": "npm run build && npm publish && rm -rf lib"
   },
   "main": "lib/index.js",
-  "module": "index.js",
+  "module": "lib/index.es.js",
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

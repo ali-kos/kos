@@ -14,4 +14,17 @@ export default [
       format: 'cjs',
     },
   },
+  {
+    input: './index.js',
+    plugins: [
+      babel({
+        exclude: 'node_modules/**',
+      }),
+    ],
+
+    output: {
+      file: 'lib/index.es.js',
+      format: 'es',
+    },
+  },
 ];
