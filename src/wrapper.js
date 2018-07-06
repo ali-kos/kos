@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { wrapperDispatch, getParam } from './util';
 import Model from './model';
-import Store from './store';
 
 const { func } = PropTypes;
 
@@ -11,16 +10,6 @@ const Wrapper = config => (Component) => {
   const { model = {}, autoLoad = true, namespace } = config;
   const WrapperComponent = class extends PureComponent {
     constructor(props) {
-      // const _namespace = props.namespace || namespace;
-
-      // Model.add({
-      //   namespace,
-      //   ...model
-      // });
-
-      // if (_namespace !== namespace) {
-      //   props = Store().getState()[_namespace] || {};
-      // }
       super(props);
 
       this.namespace = props.namespace || namespace;;
@@ -126,13 +115,15 @@ export default config => Component => {
         namespace
       })(Component);
 
-      const mapStateToProps = state => state[namespace] || {}
+      const mapStateToProps = state => state[namespace] || {
+        ...model.initial
+      };
       this.WrapperContainer = connect(mapStateToProps)(WrapperComponent);
     }
     render() {
       const { WrapperContainer } = this;
 
-      return (<WrapperContainer {...this.props}/>);
+      return (<WrapperContainer {...this.props} />);
     }
   };
 };
