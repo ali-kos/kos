@@ -1,6 +1,6 @@
 {
   "name": "kos-core",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "基于react-redux的可使用封装",
   "repository": {
     "type": "git",

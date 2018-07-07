@@ -1,13 +1,10 @@
-// import { createStore, applyMiddleware } from 'redux';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
 
 import * as Util from './src/util';
-// import asyncMiddleware from './src/async-middleware';
 import Wrapper from './src/wrapper';
 import Model from './src/model';
-// import RootReducer from './src/root-reducer';
 
 import Store from './src/store';
 
