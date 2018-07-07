@@ -1,7 +1,10 @@
+node_modules
+.babelrc
 .editorconfig
+.eslintrc
 .eslintrc.js
 .gitignore
 .npmignore
-.babelrc
 rollup.config.js
 npm-debug.log
+package-lock.json
