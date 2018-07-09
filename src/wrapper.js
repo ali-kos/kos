@@ -4,28 +4,25 @@ import PropTypes from 'prop-types';
 import { wrapperDispatch, getParam } from './util';
 import Model from './model';
 
+const { func } = PropTypes;
+
 const NoNamespaceStateKey = '@@no-namespace-state-key';
 
 const Wrapper = config => (Component) => {
-  const { model = {}, autoLoad = true, namespace } = config;
+  const { model = {}, autoLoad = true, autoReset = true, namespace } = config;
   const WrapperComponent = class extends PureComponent {
     constructor(props) {
       super(props);
 
       this.namespace = props.namespace || namespace;;
       this.autoLoad = props.autoLoad === false ? false : autoLoad;
-
+      this.autoReset = props.autoReset === false ? false : autoReset;
       this.model = Model.add({
         ...config.model,
         namespace: this.namespace
       });
 
       this.dispatch = wrapperDispatch(props.dispatch, this.namespace);
-
-    }
-    dispatch(action) {
-      const { dispatch } = this.props;
-      return wrapperDispatch(dispatch, this.namespace)(action);
     }
     getChildContext() {
       return {
@@ -71,7 +68,7 @@ const Wrapper = config => (Component) => {
       // 如果connect的时候state中并不存在this.namespace的数据，为保证数据的一致性，设置上去
       if (this.props[NoNamespaceStateKey]) {
         const model = Model.get(this.namespace);
-        model && this.props.dispatch({
+        model && this.dispatch({
           type: 'setState',
           payload: {
             ...model.getInitial()
@@ -80,6 +77,18 @@ const Wrapper = config => (Component) => {
       }
       if (this.autoLoad) {
         this.setup();
+      }
+    }
+    componentWillUnmount() {
+      if (this.autoReset) {
+        const model = Model.get(this.namespace);
+
+        this.dispatch({
+          type: 'reset',
+          payload: {
+            ...model.getInitial(),
+          },
+        });
       }
     }
     render() {
