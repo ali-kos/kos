@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { wrapperDispatch, getParam } from './util';
 import Model from './model';
 
-const { func } = PropTypes;
+const NoNamespaceStateKey = '@@no-namespace-state-key';
 
 const Wrapper = config => (Component) => {
   const { model = {}, autoLoad = true, namespace } = config;
@@ -68,6 +68,16 @@ const Wrapper = config => (Component) => {
       });
     }
     componentDidMount() {
+      // 如果connect的时候state中并不存在this.namespace的数据，为保证数据的一致性，设置上去
+      if (this.props[NoNamespaceStateKey]) {
+        const model = Model.get(this.namespace);
+        model && this.props.dispatch({
+          type: 'setState',
+          payload: {
+            ...model.getInitial()
+          }
+        })
+      }
       if (this.autoLoad) {
         this.setup();
       }
@@ -122,7 +132,8 @@ export default config => Component => {
       })(Component);
 
       const mapStateToProps = state => state[namespace] || {
-        ...model.initial
+        ...model.initial,
+        [NoNamespaceStateKey]: true
       };
       this.WrapperContainer = connect(mapStateToProps)(WrapperComponent);
     }
