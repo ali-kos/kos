@@ -56,16 +56,21 @@ const Wrapper = config => (Component) => {
       });
 
       if (this.autoLoad) {
-        this.dispatch({
-          type: 'setup',
-          payload: {
-            param: this.getParam(),
-          },
-        });
+        this.setup();
       }
     }
+    setup() {
+      this.dispatch({
+        type: 'setup',
+        payload: {
+          param: this.getParam(),
+        },
+      });
+    }
     componentDidMount() {
-      this.resetData();
+      if (this.autoLoad) {
+        this.setup();
+      }
     }
     render() {
       const { ViewComponent } = this;
@@ -93,7 +98,7 @@ export default config => Component => {
   const { model } = config;
   config.namespace = config.namespace || model.namespace;
 
-  Model.add({
+  config.namespace && Model.add({
     ...model,
     namespace: config.namespace
   });
@@ -102,8 +107,9 @@ export default config => Component => {
   return class WrapperConnect extends React.PureComponent {
     constructor(props) {
       super(props);
+
       const namespace = props.namespace || config.namespace || model.namespace;
-      if (namespace !== config.namespace) {
+      if (namespace && namespace !== config.namespace) {
         Model.add({
           ...model,
           namespace
