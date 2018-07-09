@@ -9,7 +9,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "rm -rf lib && rollup -c",
-    "pub": "npm run build && npm publish && rm -rf lib"
+    "pub": "rm -rf lib && npm run build && npm publish && rm -rf lib"
   },
   "main": "lib/index.js",
   "module": "lib/index.es.js",
