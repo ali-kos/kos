@@ -7,3 +7,5 @@
 ## v1.1.0
 * kos.Wrapper({model,autoLoad,autoReset})：组件销毁时，增加autoReset配置，默认为true，为true时自动重置数据
 
+## v2.0.0
+* 修复middleware顺序错误，v1.x的时候，kos.use的middleware执行顺序为先use，后执行；v2.x以后修改为先use先执行

@@ -19,7 +19,7 @@ const KOS = {
     return Model.get(namespace);
   },
   use(middleware) {
-    middlewareList.unshift(middleware);
+    middlewareList.push(middleware);
   },
   
   Wrapper: Wrapper,
