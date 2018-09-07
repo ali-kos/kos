@@ -31,6 +31,32 @@
 * **参数：** 
  + **App：** React.Component
 
+#### KOS.wrapperProps(props)
+
+
+* **说明：** 用于给Component注入初始化的props，使用在扩展场景，当前的Component会注入
+
+```js
+{
+  dispatch,
+  getNamespace,
+  getParam,
+}
+```
+* **参数：** 
+ + **props：** Object，例如：
+ ```js
+ {
+   getForm:(formName)=>{
+    const namespace = this.getNamespace();
+    return Form.getForm(namespace,formName);
+   }
+ }
+ ```
+
+ 注意：此处的函数作用域指向是Component的`this.props`
+
+
 
 #### KOS.Wrapper(config)(Component)
 

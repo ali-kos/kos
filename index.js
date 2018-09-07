@@ -9,6 +9,8 @@ import Model from "./src/model";
 import Store from "./src/store";
 
 const middlewareList = [];
+const wrapperProps = {};
+
 const KOS = {
   Util,
   registeModel: model => Model.add(model),
@@ -21,9 +23,10 @@ const KOS = {
   use(middleware) {
     middlewareList.push(middleware);
   },
-
-  Wrapper: Wrapper,
-
+  wrapperProps: props => {
+    Object.assign(wrapperProps, props);
+  },
+  Wrapper: Wrapper(wrapperProps),
   Provider(Layout) {
     Store(middlewareList);
     return (
