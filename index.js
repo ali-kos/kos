@@ -1,12 +1,12 @@
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Provider } from 'react-redux';
+import ReactDOM from "react-dom";
+import React from "react";
+import { Provider } from "react-redux";
 
-import * as Util from './src/util';
-import Wrapper from './src/wrapper';
-import Model from './src/model';
+import * as Util from "./src/util";
+import Wrapper from "./src/wrapper";
+import Model from "./src/model";
 
-import Store from './src/store';
+import Store from "./src/store";
 
 const middlewareList = [];
 const KOS = {
@@ -21,16 +21,20 @@ const KOS = {
   use(middleware) {
     middlewareList.push(middleware);
   },
-  
+
   Wrapper: Wrapper,
 
-  start(Layout, container = '#main') {
+  Provider(Layout) {
     Store(middlewareList);
-
-    ReactDOM.render((<Provider store={store}>
-      <Layout />
-    </Provider>), document.querySelector(container)); // eslint-disable-line
+    return (
+      <Provider store={store}>
+        <Layout />
+      </Provider>
+    );
   },
+  start(Layout, container = "#main") {
+    ReactDOM.render(KOS.Provider(Layout), document.querySelector(container)); // eslint-disable-line
+  }
 };
 
 export default KOS;

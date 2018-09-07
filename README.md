@@ -25,6 +25,13 @@
 * **说明：** 用于启动一个应用程序
 
 
+#### KOS.Provider(App)
+
+* **说明：** 获取Provider包裹的高阶组件，并完成store的初始化等动作
+* **参数：** 
+ + **App：** React.Component
+
+
 #### KOS.Wrapper(config)(Component)
 
 * **说明：** 将Component使用Wrapper组件进行包装后，挂在到connect下面，用户将Model和View进行包装
