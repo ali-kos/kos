@@ -10,7 +10,7 @@ let store = null;
 
 export default (middlewareList) => {
   if (!store) {
-    const ml = [asyncMiddleware].concat(middlewareList);
+    const ml = [...middlewareList, asyncMiddleware];
 
     const enchance = applyMiddleware(...ml);
 
