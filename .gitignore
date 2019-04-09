@@ -25,3 +25,4 @@ yarn*
 **/frame/index.js
 node_modules/
 lib/
+package-lock.json

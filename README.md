@@ -139,6 +139,46 @@ export default {
 
 #### API说明
 
+#### Definition(@types/kos-core) change log
+``` install: npm install @types/kos-core ```
+
+2019-4-8: Update asyncs function's paramaters as unrequited to fit much more scenarios.
+```
+export interface KosModel<T = any> {
+    ...;
+    asyncs: {
+        [key: string]: (dispatch: KosDispatch, getState: GetKosState<T>, action: Action) => void;
+    };
+    ...
+```
+to
+```
+export interface KosModel<T = any> {
+    ...;
+    asyncs: {
+        [key: string]: (dispatch?: KosDispatch, getState?: GetKosState<T>, action?: { payload: T }) => void;
+    };
+    ...
+```
 
 
+2018-11-1:
+change
+```
+export interface KosModel<T = any> {
+    ...;
+    asyncs: {
+        [key: string]: (dispatch: KosDispatch, getState?: GetKosState<T>) => void;
+    };
+    ...
+```
+to
+```
+export interface KosModel<T = any> {
+    ...;
+    asyncs: {
+        [key: string]: (dispatch: KosDispatch, getState: GetKosState<T>, action: Action) => void;
+    };
+    ...
+```
 
