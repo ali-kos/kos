@@ -128,15 +128,6 @@ const Wrapper = config => Component => {
 
 const NamespaceMap = {};
 export default WrapperProps => config => Component => {
-  // const { model } = config;
-  // config.namespace = config.namespace || model.namespace;
-
-  // config.namespace &&
-  //   Model.add({
-  //     ...model,
-  //     namespace: config.namespace
-  //   });
-
   return class WrapperConnect extends React.PureComponent {
     constructor(props) {
       super(props);
