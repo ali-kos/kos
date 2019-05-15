@@ -30,7 +30,6 @@ const Wrapper = config => Component => {
       });
 
       this.dispatch = wrapperDispatch(props.dispatch, this.namespace);
-
     }
     getChildContext() {
       return {
@@ -125,27 +124,40 @@ const Wrapper = config => Component => {
   return WrapperComponent;
 };
 
+const NamespaceMap = {};
 export default WrapperProps => config => Component => {
-  const { model } = config;
-  config.namespace = config.namespace || model.namespace;
+  // const { model } = config;
+  // config.namespace = config.namespace || model.namespace;
 
-  config.namespace &&
-    Model.add({
-      ...model,
-      namespace: config.namespace
-    });
+  // config.namespace &&
+  //   Model.add({
+  //     ...model,
+  //     namespace: config.namespace
+  //   });
 
   return class WrapperConnect extends React.PureComponent {
     constructor(props) {
       super(props);
+      const { model } = config;
 
-      const namespace = props.namespace || config.namespace || model.namespace;
-      if (namespace && namespace !== config.namespace) {
-        Model.add({
-          ...model,
-          namespace
-        });
+      let namespace =
+        props.namespace ||
+        config.namespace ||
+        model.namespace ||
+        Component.name;
+
+      // 没有被注册过
+      NamespaceMap[namespace] = NamespaceMap[namespace] || 0;
+      const insCount = NamespaceMap[namespace];
+      NamespaceMap[namespace]++;
+      if (insCount) {
+        namespace = `${namespace}-${insCount}`;
       }
+
+      Model.add({
+        ...model,
+        namespace
+      });
 
       const WrapperComponent = Wrapper({
         ...config,
