@@ -14,3 +14,6 @@
 ## v2.3.0
 * 提供namespace自动生成能力
 * namespace支持多实例能力
+
+## v2.4.0
+* Model实例提供getState方法，以供扩展使用

@@ -1,3 +1,4 @@
+import Store from "./store";
 
 const DefaultReducers = {
   setState(state, action) {
@@ -10,31 +11,29 @@ const DefaultReducers = {
 
     return {
       ...state,
-      ...payload,
+      ...payload
     };
   },
   reset(state, action) {
     return {
-      ...action.payload,
+      ...action.payload
     };
-  },
+  }
 };
 
 const Model = class {
   constructor(model) {
-    const {
-      namespace, asyncs, reducers, setup,
-    } = model;
+    const { namespace, asyncs, reducers, setup } = model;
     this.namespace = namespace;
     Object.assign(model, {
       asyncs: {
         setup,
-        ...asyncs,
+        ...asyncs
       },
       reducers: {
         ...DefaultReducers,
-        ...reducers,
-      },
+        ...reducers
+      }
     });
 
     this.model = model;
@@ -54,17 +53,22 @@ const Model = class {
   getAttr(attrName) {
     return this.model[attrName];
   }
+  getState() {
+    const namespace = this.getNamespace();
+    const state = Store().getState() || {};
+    return state[namespace];
+  }
   getSetup() {
     return this.model.setup;
   }
 };
 
-const createModelFactory = (model) => {
+const createModelFactory = model => {
   const { namespace } = model;
 
   if (!namespace) {
-    console.error('namespace is undefined!', model);  // eslint-disable-line
-    throw new Error('namespace is undefined!');
+    console.error("namespace is undefined!", model); // eslint-disable-line
+    throw new Error("namespace is undefined!");
   }
   return new Model(model); // eslint-disable-line
 };
@@ -96,7 +100,8 @@ Object.assign(Model, {
     return initial;
   },
   each(callback) {
-    for (const namespace in map) { // eslint-disable-line
+    for (const namespace in map) {
+      // eslint-disable-line
       callback(namespace, map[namespace]);
     }
   },
@@ -112,7 +117,7 @@ Object.assign(Model, {
     const model = this.get(namespace);
 
     return model && model.setup;
-  },
+  }
 });
 
 export default Model;
