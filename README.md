@@ -157,7 +157,7 @@ interface Util {
     getParam: () => any;
 }
 ```
-
+##### 2
 ```
     setup?: (dispatch: KosDispatch, getState: GetKosState<T>) => void;
 ```
