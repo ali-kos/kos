@@ -142,6 +142,30 @@ export default {
 #### Definition(@types/kos-core) change log
 ``` install: npm install @types/kos-core ```
 
+2019-5-22: Update definitions to fit new version.
+
+##### 1
+```
+interface Util {
+    getActionType: (action: string) => { namespace: string | null; type: string };
+}
+```
+to
+```
+interface Util {
+    getActionType: (action: string) => { namespace: string | null; type: string };
+    getParam: () => any;
+}
+```
+
+```
+    setup?: (dispatch: KosDispatch, getState: GetKosState<T>) => void;
+```
+to
+```
+    setup?: (dispatch: KosDispatch, getState: GetKosState<T>, action: { payload: { param: any } }) => void;
+```
+
 2019-4-8: Update asyncs function's paramaters as unrequited to fit much more scenarios.
 ```
 export interface KosModel<T = any> {
