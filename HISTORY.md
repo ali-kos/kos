@@ -17,3 +17,12 @@
 
 ## v2.4.0
 * Model实例提供getState方法，以供扩展使用
+
+
+## v2.5.0
+* namespace多实例自动生成存在严重bug，该功能放弃，多实例请通过props.namespace的方式自行传入支持
+
+
+
+## v2.6.0
+* 提供kos.WrapperProvider高阶方法，返回Provider包裹的高阶组件

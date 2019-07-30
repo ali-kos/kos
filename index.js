@@ -8,7 +8,10 @@ import Model from "./src/model";
 
 import Store from "./src/store";
 
+// 全局的中间件
 const middlewareList = [];
+
+// 全局的Wrapper扩展属性
 const wrapperProps = {};
 
 const KOS = {
@@ -26,9 +29,14 @@ const KOS = {
   wrapperProps: props => {
     Object.assign(wrapperProps, props);
   },
-  Wrapper: Wrapper(wrapperProps),
+  Wrapper: Wrapper()(wrapperProps),
+  WrapperProvider: config => {
+    const store = Store(middlewareList);
+    return Wrapper(store)(wrapperProps)(config);
+  },
   Provider(Layout) {
-    Store(middlewareList);
+    const store = Store(middlewareList);
+
     return (
       <Provider store={store}>
         <Layout />

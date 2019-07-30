@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
+import { connect, Provider } from "react-redux";
 import PropTypes from "prop-types";
 import { wrapperDispatch, getParam } from "./util";
 import Model from "./model";
@@ -25,7 +25,7 @@ const Wrapper = config => Component => {
       this.autoLoad = props.autoLoad === false ? false : autoLoad;
       this.autoReset = props.autoReset === false ? false : autoReset;
       this.model = Model.add({
-        ...config.model,
+        ...model,
         namespace: this.namespace
       });
 
@@ -103,8 +103,6 @@ const Wrapper = config => Component => {
       }
     }
     render() {
-      const { wrapperProps } = this;
-
       return (
         <Component
           {...this.props}
@@ -126,26 +124,23 @@ const Wrapper = config => Component => {
   return WrapperComponent;
 };
 
-const NamespaceMap = {};
-export default WrapperProps => config => Component => {
+// const NamespaceMap = {};
+/**
+ * @param 第一阶函数的参数，用于扩展默认的Wrapper，WrapperProps 扩展的属性
+ * @param config 高阶函数的config 用于和组件结合
+ * @param Component 内容组件
+ */
+export default store => WrapperProps => config => Component => {
   return class WrapperConnect extends React.PureComponent {
     constructor(props) {
       super(props);
-      const { model } = config;
+      const { model, wrapperLifeCycle } = config;
 
       let namespace =
         props.namespace ||
         config.namespace ||
         model.namespace ||
         Component.name;
-
-      // 没有被注册过
-      NamespaceMap[namespace] = NamespaceMap[namespace] || 0;
-      const insCount = NamespaceMap[namespace];
-      NamespaceMap[namespace]++;
-      if (insCount) {
-        namespace = `${namespace}-${insCount}`;
-      }
 
       Model.add({
         ...model,
@@ -163,12 +158,22 @@ export default WrapperProps => config => Component => {
           ...model.initial,
           [NoNamespaceStateKey]: true
         };
+
       this.WrapperContainer = connect(mapStateToProps)(WrapperComponent);
+
+      // merger上生命周期，可用于扩展
+      Object.assign(this, wrapperLifeCycle);
     }
     render() {
       const { WrapperContainer } = this;
 
-      return <WrapperContainer {...this.props} />;
+      return store ? (
+        <Provider store={store}>
+          <WrapperContainer {...this.props} />
+        </Provider>
+      ) : (
+        <WrapperContainer {...this.props} />
+      );
     }
   };
 };
