@@ -1,6 +1,6 @@
 {
   "name": "kos-core",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "基于react-redux的可使用封装",
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "rollup": "^0.57.1",
-    "rollup-plugin-babel": "^3.0.3"
+    "rollup-plugin-babel": "^3.0.3",
+    "redux-devtools-extension'": "2"
   }
 }

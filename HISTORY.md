@@ -31,3 +31,6 @@
 
 ## v2.7.0
 * 提供redux-dev-tools支持
+
+## v2.7.1
+* 提供redux-dev-tools支持
