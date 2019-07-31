@@ -26,3 +26,8 @@
 
 ## v2.6.0
 * 提供kos.WrapperProvider高阶方法，返回Provider包裹的高阶组件
+
+
+
+## v2.7.0
+* 提供redux-dev-tools支持
