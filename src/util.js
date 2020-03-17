@@ -30,8 +30,12 @@ export function getParam() {
   }
   search.forEach((equation) => {
     const [key, value] = equation.split('=');
-    if (value !== undefined) {
-      query[decodeURIComponent(key)] = decodeURIComponent(value);
+    try {
+      if (value !== undefined) {
+        query[decodeURIComponent(key)] = decodeURIComponent(value);
+      }
+    } catch (error) {
+      console.error(error.message || `Error happened when decodeURIComponent ${value}`)
     }
   });
   return query;
