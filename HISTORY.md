@@ -37,3 +37,6 @@
 
 ## v2.7.2
 * bugfix: 兼容未安装redux-devtools-extension的情况
+
+## v2.7.3
+* bugfix: URL参数格式错误是，提供try/catch能力
